@@ -1,0 +1,29 @@
+name: Cleanup merged branches
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete 001-make-the-project branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api -X DELETE "repos/${{ github.repository }}/git/refs/heads/001-make-the-project" \
+            && echo "Deleted branch: 001-make-the-project" \
+            || echo "Branch 001-make-the-project not found or already deleted"
+
+      - name: Delete copilot/remove-query-quill-destiny-folder branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api -X DELETE "repos/${{ github.repository }}/git/refs/heads/copilot/remove-query-quill-destiny-folder" \
+            && echo "Deleted branch: copilot/remove-query-quill-destiny-folder" \
+            || echo "Branch copilot/remove-query-quill-destiny-folder not found or already deleted"
